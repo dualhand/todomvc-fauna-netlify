@@ -23,7 +23,7 @@
                         <button @click="createTodo" class="ml-2 bg-blue-500 rounded-xl px-4 py-2">Add</button>
                     </div>
                     <div class="mt-6" v-for="task in tasks" :key="task">
-                        <p>{{ task }}</p>
+                        <p>{{ task.data.title }}</p>
                     </div>
                     {{ currentTask }}
                 </div>
@@ -39,13 +39,25 @@
                 methods: {
                     async createTodo(data) {
                         return fetch('/.netlify/functions/todos-create', {
-                            body: JSON.stringify(this.currentTask),
+                            body: JSON.stringify({title: this.currentTask}),
                             method: 'POST'
                         }).then(response => {
                             this.currentTask = '';
                             return response.json();
                         });
                     }
+                },
+                computed: {
+                    tasksData () {
+                        return this.tasks.map(function(task) {
+                            return task.data;
+                        })
+                    }
+                },
+                async mounted() {
+                    const response = await fetch('/.netlify/functions/read-all-todos');
+                    const tasks = await response.json();
+                    this.tasks = tasks;
                 }
             });
         </script>
