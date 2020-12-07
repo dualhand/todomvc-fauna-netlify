@@ -38,7 +38,7 @@
                 },
                 methods: {
                     async createTodo(data) {
-                        return fetch('http://localhost:9000/.netlify/functions/todos-create', {
+                        return fetch('/.netlify/functions/todos-create', {
                             body: JSON.stringify(this.currentTask),
                             method: 'POST'
                         }).then(response => {
