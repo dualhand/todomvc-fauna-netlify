@@ -10,7 +10,7 @@
     "bootstrap": "node ./scripts/bootstrap-fauna-database.js",
     "start": "npm-run-all --parallel start:server",
     "start:app": "netlify dev",
-    "start:server": "netlify-lambda serve functions",
+    "start:server": "netlify-lambda serve functions-builds",
     "prebuild": "echo 'setup faunaDB' && npm run bootstrap",
     "build": "npm-run-all --parallel build:**",
     "build:functions": "netlify-lambda build functions"
