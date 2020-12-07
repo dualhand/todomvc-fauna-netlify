@@ -18,8 +18,36 @@
             <div class="flex items-center w-full rounded-xl">
                 <div class="px-12 pt-8 pb-12 max-w-4xl w-full mx-auto bg-gray-100 bg-opacity-30 rounded-xl shadow-2xl">
                     <h1 class="w-full mx-auto text-2xl font-bold">TODO</h1>
+                    <div class="mt-6">
+                        <input v-model="currentTask" @click="createTodo" class="px-2 py-2 rounded-lg" type="text" name="task" />
+                        <button class="ml-2 bg-blue-500 rounded-xl px-4 py-2">Add</button>
+                    </div>
+                    <div class="mt-6" v-for="task in tasks" :key="task">
+                        <p>{{ task }}</p>
+                    </div>
+                    {{ currentTask }}
                 </div>
             </div>
         </div>
+        <script>
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    currentTask: '',
+                    tasks: ['comprar pan', 'cortar pelo', 'pasear gato']
+                },
+                methods: {
+                    async createTodo(data) {
+                        return fetch('/.netlify/functions/todos-create', {
+                            body: JSON.stringify(this.currentTask),
+                            method: 'POST'
+                        }).then(response => {
+                            this.currentTask = '';
+                            return response.json();
+                        });
+                    }
+                }
+            });
+        </script>
     </body>
     </html>
